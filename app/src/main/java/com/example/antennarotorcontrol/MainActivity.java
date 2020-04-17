@@ -256,9 +256,6 @@ public class MainActivity extends AppCompatActivity implements Runnable, IOIOint
         SharedFunctions.obs_geodetic_lon = longitude * SharedFunctions.deg2rad;    // Observer's longitude in radians
         SharedFunctions.obs_geodetic_alt = 0.18;       // Observer's altitude in km
 
-        String tempval_str = "";
-
-
         /*String tleElement = "SAUDISAT 1C (SO-50)\n" +
                 "1 27607U 02058C   20106.54414103  .00000007  00000-0  21737-4 0  9999\n" +
                 "2 27607  64.5556 206.7081 0055918 193.7297 166.2289 14.75625318931442\n";*/
@@ -269,10 +266,6 @@ public class MainActivity extends AppCompatActivity implements Runnable, IOIOint
         // Here I use a temporary string that holds the database value and then use trim()
         // to remove any leading and/or trailing spaces so the conversion doesn't throw an error.
         // This hack is also used in SatPredict
-
-        tempval_str = "1"; //SatData[23];  // revnr
-        tempval_str = tempval_str.trim();
-        SharedFunctions.sat_orbitnum = Long.parseLong(tempval_str);
 
         SharedFunctions.tle_sat_name = SharedFunctions.sat_name;
         SharedFunctions.tle_idesg = SharedFunctions.sat_designator;
