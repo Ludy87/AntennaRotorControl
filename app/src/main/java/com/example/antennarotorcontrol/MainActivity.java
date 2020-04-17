@@ -13,7 +13,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -111,9 +110,7 @@ public class MainActivity extends AppCompatActivity implements Runnable, IOIOint
      *******************************
      ******************************/
 
-
     private static final int PERMISSION_ID = 44;
-    private static final int PERMISSION_STORAGE_CODE = 1000;
 
     FusedLocationProviderClient mFusedLocationClient;
 
@@ -123,7 +120,6 @@ public class MainActivity extends AppCompatActivity implements Runnable, IOIOint
     String strLocator = "";
     TextView tv_qth_on_main_activity;
     CoordToLoc objCoordToLoc;
-    private Toolbar toolbar;
     ListView list;
     String[] titles = {"Track Satellite", "ISS", "Amateur Radio Satellites",
             "Manual Rotor Control", "Search Satellites"};
@@ -139,61 +135,47 @@ public class MainActivity extends AppCompatActivity implements Runnable, IOIOint
         DownloadInterface dInterface = new DownloadInterface() {
             @Override
             public void onResult() {
-                // TODO listArray
                 readTxtFile = new ReadTxtFile(getBaseContext());
                 Models models = readTxtFile.readFile();
                 for (Model model : models.getModels()) {
                     /*
                      * TLE MANUELL IMPORTIEREN
                      */
+                    SharedFunctions.sat_name = model.getSatName(); // name
+                    SharedFunctions.sat_catnum = Long.parseLong(model.getSatLineOneNumber()); // catalog number
+                    SharedFunctions.sat_designator = model.getSatLineOneClass(); // class
+                    SharedFunctions.sat_year = Integer.parseInt(model.getSatLineOneEpochyr()); // epochyear
+                    SharedFunctions.sat_refepoch = Double.parseDouble(model.getSatLineOneEpochday()); // epochday
+                    SharedFunctions.sat_drag = Double.parseDouble(model.getSatLineOneFtdmm()); // ftdmm
+                    String lineOneA6 = model.getLineOne().split(" ")[6];
+                    int exponent = Integer.parseInt(lineOneA6.substring(lineOneA6.length() - 2));
+                    String tempvalue = lineOneA6.substring(0, 1) + "." + lineOneA6.substring(1, 5);
+                    double dragvalue = Double.parseDouble(tempvalue);
+                    dragvalue = dragvalue * 0.001;
+                    SharedFunctions.sat_bstar = dragvalue;
+                    SharedFunctions.sat_incl = Double.parseDouble(model.getSatLineTwoIncl());    // incl
+                    SharedFunctions.sat_raan = Double.parseDouble(model.getSatLineTwoRa());    // ra
+                    SharedFunctions.sat_eccn = Double.parseDouble("0." + model.getSatLineTwoEcc());    // ecc
+                    SharedFunctions.sat_argper = Double.parseDouble(model.getSatLineTwoPeri());  // peri
+                    SharedFunctions.sat_meanan = Double.parseDouble(model.getSatLineTwoMa());  // ma
+                    SharedFunctions.sat_meanmo = Double.parseDouble(model.getSatLineTwoMm());  // mm
+                    String tempval_str = model.getSatLineTwoRevnr();  // revnr
+                    SharedFunctions.sat_orbitnum = Long.parseLong(tempval_str);
 
-                    TleManualImport tleFunction = new TleManualImport();
-
-                    for (Model m : models.getModels()) {
-
-                        String tleElement = m.getLines();   //.threeLineElement;
-                    /*tleElement = "SAUDISAT 1C (SO-50)\n" +
-                            "1 27607U 02058C   20106.54414103  .00000007  00000-0  21737-4 0  9999\n" +
-                            "2 27607  64.5556 206.7081 0055918 193.7297 166.2289 14.75625318931442\n";*/
-
-                        String[] SatData = tleFunction.processTLE(tleElement);      //tleElement
-
-                        SharedFunctions.sat_name = m.getSatName(); //SatData[0];                         // name
-                        SharedFunctions.sat_catnum = Long.parseLong(m.getSatLineOneNumber());       // catalog number
-                        SharedFunctions.sat_designator = m.getSatLineOneClass();                   // class
-                        SharedFunctions.sat_year = Integer.parseInt(m.getSatLineOneEpochyr());        // epochyear
-                        SharedFunctions.sat_refepoch = Double.parseDouble(m.getSatLineOneEpochday()); // epochday
-                        SharedFunctions.sat_drag = Double.parseDouble(m.getSatLineOneFtdmm());     // ftdmm
-                        String lineOneA6 = m.getLineOne().split(" ")[6];
-                        int exponent = Integer.parseInt(lineOneA6.substring(lineOneA6.length() - 2));
-                        String tempvalue = lineOneA6.substring(0, 1) + "." + lineOneA6.substring(1, 5);
-                        double dragvalue = Double.parseDouble(tempvalue);
-                        dragvalue = dragvalue * 0.001;
-                        SharedFunctions.sat_bstar = dragvalue;
-                        SharedFunctions.sat_incl = Double.parseDouble(m.getSatLineTwoIncl());    // incl
-                        SharedFunctions.sat_raan = Double.parseDouble(m.getSatLineTwoRa());    // ra
-                        SharedFunctions.sat_eccn = Double.parseDouble("0." + m.getSatLineTwoEcc());    // ecc
-                        SharedFunctions.sat_argper = Double.parseDouble(m.getSatLineTwoPeri());  // peri
-                        SharedFunctions.sat_meanan = Double.parseDouble(m.getSatLineTwoMa());  // ma
-                        SharedFunctions.sat_meanmo = Double.parseDouble(m.getSatLineTwoMm());  // mm
-                        String tempval_str = m.getSatLineTwoRevnr();  // revnr
-                        SharedFunctions.sat_orbitnum = Long.parseLong(tempval_str);
-
-                        SharedFunctions.tle_sat_name = SharedFunctions.sat_name;
-                        SharedFunctions.tle_idesg = SharedFunctions.sat_designator;
-                        SharedFunctions.tle_catnr = (int) SharedFunctions.sat_catnum;
-                        SharedFunctions.tle_epoch = (1000.0 * (double) SharedFunctions.sat_year) + SharedFunctions.sat_refepoch;
-                        SharedFunctions.tle_xndt2o = SharedFunctions.sat_drag;
-                        SharedFunctions.tle_xndd6o = SharedFunctions.sat_nddot6;
-                        SharedFunctions.tle_bstar = SharedFunctions.sat_bstar;
-                        SharedFunctions.tle_xincl = SharedFunctions.sat_incl;
-                        SharedFunctions.tle_xnodeo = SharedFunctions.sat_raan;
-                        SharedFunctions.tle_eo = SharedFunctions.sat_eccn;
-                        SharedFunctions.tle_omegao = SharedFunctions.sat_argper;
-                        SharedFunctions.tle_xmo = SharedFunctions.sat_meanan;
-                        SharedFunctions.tle_xno = SharedFunctions.sat_meanmo;
-                        SharedFunctions.tle_revnum = (int) SharedFunctions.sat_orbitnum;
-                    }
+                    SharedFunctions.tle_sat_name = SharedFunctions.sat_name;
+                    SharedFunctions.tle_idesg = SharedFunctions.sat_designator;
+                    SharedFunctions.tle_catnr = (int) SharedFunctions.sat_catnum;
+                    SharedFunctions.tle_epoch = (1000.0 * (double) SharedFunctions.sat_year) + SharedFunctions.sat_refepoch;
+                    SharedFunctions.tle_xndt2o = SharedFunctions.sat_drag;
+                    SharedFunctions.tle_xndd6o = SharedFunctions.sat_nddot6;
+                    SharedFunctions.tle_bstar = SharedFunctions.sat_bstar;
+                    SharedFunctions.tle_xincl = SharedFunctions.sat_incl;
+                    SharedFunctions.tle_xnodeo = SharedFunctions.sat_raan;
+                    SharedFunctions.tle_eo = SharedFunctions.sat_eccn;
+                    SharedFunctions.tle_omegao = SharedFunctions.sat_argper;
+                    SharedFunctions.tle_xmo = SharedFunctions.sat_meanan;
+                    SharedFunctions.tle_xno = SharedFunctions.sat_meanmo;
+                    SharedFunctions.tle_revnum = (int) SharedFunctions.sat_orbitnum;
                 }
 
             }
@@ -223,35 +205,35 @@ public class MainActivity extends AppCompatActivity implements Runnable, IOIOint
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         //Main Toolbar
-        toolbar = findViewById(R.id.myToolbar);
+        Toolbar toolbar = findViewById(R.id.myToolbar);
         setSupportActionBar(toolbar);
 
         // MENU ENTRIES MAIN MENU
         list = findViewById(R.id.list1);
-        MyAdapter adapter = new MyAdapter(this, titles, imgs);
+        MyAdapter adapter = new MyAdapter(getBaseContext(), titles, imgs);
         list.setAdapter(adapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 0) {
-                    Intent intent1 = new Intent(MainActivity.this, SettingsActivity.class);
+                    Intent intent1 = new Intent(getBaseContext(), SettingsActivity.class);
                     startActivity(intent1);
                 }
                 if (position == 1) {
-                    Intent intent2 = new Intent(MainActivity.this, HelpActivity.class);
+                    Intent intent2 = new Intent(getBaseContext(), HelpActivity.class);
                     startActivity(intent2);
                 }
                 if (position == 2) {
-                    Intent intent3 = new Intent(MainActivity.this, HamSatMenu.class);
+                    Intent intent3 = new Intent(getBaseContext(), HamSatMenu.class);
                     startActivity(intent3);
                 }
                 if (position == 3) {
-                    Intent intent3 = new Intent(MainActivity.this, HelpActivity.class);
-                    startActivity(intent3);
+                    Intent intent4 = new Intent(getBaseContext(), HelpActivity.class);
+                    startActivity(intent4);
                 }
                 if (position == 4) {
-                    Intent intent3 = new Intent(MainActivity.this, HelpActivity.class);
-                    startActivity(intent3);
+                    Intent intent5 = new Intent(getBaseContext(), HelpActivity.class);
+                    startActivity(intent5);
                 }
 
             }
