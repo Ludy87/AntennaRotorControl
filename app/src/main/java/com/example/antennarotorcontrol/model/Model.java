@@ -100,27 +100,22 @@ public class Model {
 
     private void setSatLineTwoRa() {
         this.satLineTwoRa = lineTwo.split(" ")[3];
-                //"satLineTwoRa anpassen";
     }
 
     private void setSatLineTwoEcc() {
         this.satLineTwoEcc = lineTwo.split(" ")[4];
-                //"satLineTwoEcc anpassen";
     }
 
     private void setSatLineTwoPeri() {
         this.satLineTwoPeri = lineTwo.split(" ")[5];
-    //"satLineTwoPeri anpassen";
     }
 
     private void setSatLineTwoMa() {
         this.satLineTwoMa = lineTwo.split(" ")[6];
-    //"satLineTwoMa anpassen";
     }
 
     private void setSatLineTwoMm() {
         this.satLineTwoMm = lineTwo.split(" ")[7];
-    //"satLineTwoMm anpassen";
     }
 
     private void setSatLineTwoRevnr() {
@@ -129,8 +124,6 @@ public class Model {
         } catch (ArrayIndexOutOfBoundsException e) {
             this.satLineTwoRevnr = lineTwo.split(" ")[7].substring(11);
         }
-
-    //"satLineTwoRevnr anpassen";
     }
 
     private void setSatLineTwoChksum2() {
@@ -306,7 +299,8 @@ public class Model {
     }
 
     public String getLines() {
-        return (satName.trim() + "\n" + lineOne + "\n" + lineTwo);
+        return (satName.trim() + " " + lineOne + " " +
+                "" + lineTwo);
     }
 }
 
