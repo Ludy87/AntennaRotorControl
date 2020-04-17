@@ -2016,8 +2016,8 @@ public class SharedFunctions {
 
 
 
-        deep_arg_t deep_arg = null;
-        deep_arg.cosio=0;
+        deep_arg_t deep_arg = new deep_arg_t();
+        deep_arg.cosio = 0;
 
         /* Initialization */
 
