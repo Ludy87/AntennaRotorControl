@@ -1,13 +1,10 @@
 package com.example.antennarotorcontrol.helper;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.antennarotorcontrol.ReadTxtFile;
 import com.example.antennarotorcontrol.interfaces.DownloadInterface;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -16,11 +13,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 
-public class DownloadHelper extends AsyncTask<String, String, String> {
+public class DownloadHelper extends AsyncTask<String, Boolean, Boolean> {
 
     private DownloadInterface downloadInterface;
     private File file;
@@ -31,38 +26,35 @@ public class DownloadHelper extends AsyncTask<String, String, String> {
     }
 
     @Override
-    protected String doInBackground(String[] objects) {
+    protected Boolean doInBackground(String[] objects) {
+        if (file.delete()) {
+            Log.d("File delete: ", "true");
+        }
         try {
-            if (file.delete()) {
-                Log.d("File delete: ", "true");
-            }
             int count;
             URL url = new URL("https://www.celestrak.com/NORAD/elements/amateur.txt");
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            HttpURLConnection connection = null;
+            connection = (HttpURLConnection) url.openConnection();
             connection.connect();
             InputStream input = connection.getInputStream();
             OutputStream output = new FileOutputStream(file);
             byte[] data = new byte[1024];
-            long total = 0;
             while ((count = input.read(data)) != -1) {
-                total += count;
                 output.write(data, 0, count);
             }
             output.flush();
             output.close();
             input.close();
-            return "Finish";
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
+            return true;
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return false;
     }
 
     @Override
-    protected void onPostExecute(String s) {
-        if (s.equals("Finish"))
+    protected void onPostExecute(Boolean b) {
+        if (b)
             downloadInterface.onResult();
         else
             Log.d("Download", "fail");
