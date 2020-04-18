@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements Runnable, IOIOint
                 readTxtFile = new ReadTxtFile(getBaseContext());
                 Models models = readTxtFile.readFile();
                 String name1 = models.getModels().get(0).getSatName(); // Name vom ersten Element
-                String name2 = models.getModels().get(1).getSatName(); // Name vom ersten Element
+                String name2 = models.getModels().get(1).getSatName(); // Name vom zweiten Element
                 for (Model model : models.getModels()) {
                     /*
                      * TLE MANUELL IMPORTIEREN
