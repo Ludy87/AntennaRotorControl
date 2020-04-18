@@ -137,6 +137,8 @@ public class MainActivity extends AppCompatActivity implements Runnable, IOIOint
             public void onResult() {
                 readTxtFile = new ReadTxtFile(getBaseContext());
                 Models models = readTxtFile.readFile();
+                String name1 = models.getModels().get(0).getSatName(); // Name vom ersten Element
+                String name2 = models.getModels().get(1).getSatName(); // Name vom ersten Element
                 for (Model model : models.getModels()) {
                     /*
                      * TLE MANUELL IMPORTIEREN
@@ -177,7 +179,6 @@ public class MainActivity extends AppCompatActivity implements Runnable, IOIOint
                     SharedFunctions.tle_xno = SharedFunctions.sat_meanmo;
                     SharedFunctions.tle_revnum = (int) SharedFunctions.sat_orbitnum;
                 }
-
             }
         };
         File file = new File(getExternalFilesDir(null), "amateur.txt");
@@ -255,11 +256,6 @@ public class MainActivity extends AppCompatActivity implements Runnable, IOIOint
         SharedFunctions.obs_geodetic_lat = latitude * SharedFunctions.deg2rad;    // Observer's latitude in radians
         SharedFunctions.obs_geodetic_lon = longitude * SharedFunctions.deg2rad;    // Observer's longitude in radians
         SharedFunctions.obs_geodetic_alt = 0.18;       // Observer's altitude in km
-
-        /*String tleElement = "SAUDISAT 1C (SO-50)\n" +
-                "1 27607U 02058C   20106.54414103  .00000007  00000-0  21737-4 0  9999\n" +
-                "2 27607  64.5556 206.7081 0055918 193.7297 166.2289 14.75625318931442\n";*/
-
 
         // For some reason the orbit number sometimes has a leading space in the database field.
         // This causes the error: NumberFormatException.
@@ -1039,7 +1035,6 @@ public class MainActivity extends AppCompatActivity implements Runnable, IOIOint
         }
     }
 
-    //@SuppressLint("MissingPermission")
     public void getLastLocation() {
         if (checkPermissions()) {
             if (isLocationEnabled()) {
