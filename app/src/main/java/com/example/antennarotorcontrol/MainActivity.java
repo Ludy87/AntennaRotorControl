@@ -34,6 +34,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
 import com.example.antennarotorcontrol.helper.DownloadHelper;
+import com.example.antennarotorcontrol.helper.ReadTxtFile;
 import com.example.antennarotorcontrol.interfaces.DownloadInterface;
 import com.example.antennarotorcontrol.model.Model;
 import com.example.antennarotorcontrol.model.Models;

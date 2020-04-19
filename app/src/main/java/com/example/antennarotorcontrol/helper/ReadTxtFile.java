@@ -1,4 +1,4 @@
-package com.example.antennarotorcontrol;
+package com.example.antennarotorcontrol.helper;
 
 import android.content.Context;
 import android.os.Environment;
@@ -18,12 +18,12 @@ public class ReadTxtFile {
 
     private Context context;
 
-    ReadTxtFile(Context baseContext) {
+    public ReadTxtFile(Context baseContext) {
         this.context = baseContext;
     }
 
     // READ TLE-SAT DATA FILE
-    Models readFile() {
+    public Models readFile() {
         if (isExternalStorageReadable()) {
             try {
                 File textfile = new File(context.getExternalFilesDir(null), "amateur.txt");

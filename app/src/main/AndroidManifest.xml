@@ -24,14 +24,6 @@
             tools:ignore="LockedOrientationActivity" />
 
         <activity
-            android:name=".ReadTxtFile"
-            android:label="Amateur Radio Satellites"
-            android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AmateurRadioSatellitesTheme"
-            tools:ignore="LockedOrientationActivity" />
-
-        <activity
             android:name=".HelpActivity"
             android:label="Help"
             android:parentActivityName=".MainActivity"

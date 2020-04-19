@@ -11,7 +11,7 @@ public class HamMenuEntries {
     private String image;
 
     //Constructor
-    public HamMenuEntries(String hamName, String hamHoehe, String hamUDLink, String hamTimeMaxHeight, String hamAOSEOS, String image){
+    HamMenuEntries(String hamName, String hamHoehe, String hamUDLink, String hamTimeMaxHeight, String hamAOSEOS, String image){
         this.hamName = hamName;
         this.hamHoehe = hamHoehe;
         this.hamUDLink = hamUDLink;
