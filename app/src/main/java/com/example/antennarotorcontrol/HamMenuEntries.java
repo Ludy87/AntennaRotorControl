@@ -3,6 +3,7 @@ package com.example.antennarotorcontrol;
 public class HamMenuEntries {
 
     //Basic attributes
+    private String id;
     private String hamName;
     private String hamHoehe;
     private String hamUDLink;
@@ -11,7 +12,8 @@ public class HamMenuEntries {
     private String image;
 
     //Constructor
-    HamMenuEntries(String hamName, String hamHoehe, String hamUDLink, String hamTimeMaxHeight, String hamAOSEOS, String image){
+    HamMenuEntries(String id, String hamName, String hamHoehe, String hamUDLink, String hamTimeMaxHeight, String hamAOSEOS, String image){
+        this.id = id;
         this.hamName = hamName;
         this.hamHoehe = hamHoehe;
         this.hamUDLink = hamUDLink;
@@ -21,6 +23,7 @@ public class HamMenuEntries {
     }
 
     //Getters
+    public String getId() {return id;}
     public String getHamName() {return hamName;}
     public String getHamHoehe() {return hamHoehe;}
     public String getHamUDLink() {return hamUDLink;}

@@ -1,5 +1,9 @@
 package com.example.antennarotorcontrol.model;
 
+import android.util.Log;
+
+import com.example.antennarotorcontrol.helper.Utiles;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,6 +17,10 @@ public class Model {
     private String satLineOneLaunchyr;
     private String satLineOneLaunchnr;
     private String satLineOneLaunchpc;
+
+    private String satDate;
+    private String id;
+
     private String satLineOneEpochyr;
     private String satLineOneFtdmm;
     private String satLineOneEpochday;
@@ -62,12 +70,30 @@ public class Model {
         this.satLineOneEpochyr = lineOne.split(" ")[3].substring(0, 2);
     }
 
-    private void setSatLineOneFtdmm() {
-        this.satLineOneFtdmm = lineOne.split(" ")[4];
-    }
-
     private void setSatLineOneEpochday() {
         this.satLineOneEpochday = lineOne.split(" ")[3].substring(2);
+    }
+
+    private void setSatDate() {
+        this.satDate = Utiles.parseDate(lineOne.split(" ")[3]);
+    }
+
+    private void setId() {
+        this.id = Utiles.parseId(lineOne.split(" ")[3]);
+    }
+
+    public String getSatDate() {
+        setSatDate();
+        return this.satDate;
+    }
+
+    public String getId() {
+        setId();
+        return this.id;
+    }
+
+    private void setSatLineOneFtdmm() {
+        this.satLineOneFtdmm = lineOne.split(" ")[4];
     }
 
     private void setSatLineOneStdmm() {

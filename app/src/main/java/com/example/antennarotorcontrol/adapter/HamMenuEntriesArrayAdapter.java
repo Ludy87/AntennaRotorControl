@@ -51,8 +51,8 @@ public class HamMenuEntriesArrayAdapter extends ArrayAdapter<HamMenuEntries> {
             satName.setText(String.valueOf(hamMenuEntries.getHamName()));
             hoehe.setText(String.valueOf(hamMenuEntries.getHamHoehe()));
             udLink.setText(String.valueOf(hamMenuEntries.getHamUDLink()));
-            timeMaxHeight.setText(String.valueOf(hamMenuEntries.getHamTimeMaxHeight()));
-            aosEos.setText(String.valueOf(hamMenuEntries.getHamAOSEOS()));
+            timeMaxHeight.setText(hamMenuEntries.getHamAOSEOS().split(" ")[0]);
+            aosEos.setText(hamMenuEntries.getHamAOSEOS().split(" ")[1]);
 
             //get the image associated with this property
             int imageID = context.getResources().getIdentifier(hamMenuEntries.getImage(), "drawable", context.getPackageName());

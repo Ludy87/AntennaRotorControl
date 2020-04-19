@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -35,6 +36,7 @@ import androidx.core.app.ActivityCompat;
 
 import com.example.antennarotorcontrol.helper.DownloadHelper;
 import com.example.antennarotorcontrol.helper.ReadTxtFile;
+import com.example.antennarotorcontrol.helper.Utiles;
 import com.example.antennarotorcontrol.interfaces.DownloadInterface;
 import com.example.antennarotorcontrol.model.Model;
 import com.example.antennarotorcontrol.model.Models;
@@ -140,6 +142,7 @@ public class MainActivity extends AppCompatActivity implements Runnable, IOIOint
                 Models models = readTxtFile.readFile();
                 String name1 = models.getModels().get(0).getSatName(); // Name vom ersten Element
                 String name2 = models.getModels().get(1).getSatName(); // Name vom zweiten Element
+                Log.e("18, 33", models.getModels().get(0).getSatDate());
                 for (Model model : models.getModels()) {
                     /*
                      * TLE MANUELL IMPORTIEREN
@@ -185,6 +188,7 @@ public class MainActivity extends AppCompatActivity implements Runnable, IOIOint
         File file = new File(getExternalFilesDir(null), "amateur.txt");
         DownloadHelper downloadHelper = new DownloadHelper(dInterface, file);
         downloadHelper.execute();
+        //new TleManualImport().processTLE("");
     }
 
     /*********************************************************
