@@ -299,7 +299,7 @@ public class Model {
     }
 
     public String getLines() {
-        return (satName.trim() + " " + lineOne + " " +
+        return (satName + " " + lineOne + " " +
                 "" + lineTwo);
     }
 }

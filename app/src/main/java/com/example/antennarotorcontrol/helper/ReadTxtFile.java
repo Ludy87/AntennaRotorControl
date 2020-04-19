@@ -40,7 +40,7 @@ public class ReadTxtFile {
                 fis.close();
                 for (int i = 0; i < arrayList.size(); ) {
                     Model model = new Model();
-                    model.setSatName(arrayList.get(i).trim());
+                    model.setSatName(arrayList.get(i));
                     model.setLineOne(arrayList.get(i + 1));
                     model.setLineTwo(arrayList.get(i + 2));
                     models.setModels(model);
